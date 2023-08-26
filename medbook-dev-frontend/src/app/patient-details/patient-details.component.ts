@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Patient } from '../model/patient.model';
 import { PatientService } from '../service/patient.service';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router , ParamMap} from '@angular/router';
+
 
 @Component({
   selector: 'app-patient-details',
@@ -8,15 +11,29 @@ import { PatientService } from '../service/patient.service';
   styleUrls: ['./patient-details.component.css']
 })
 export class PatientDetailsComponent {
-  patient: Patient = new Patient();
-  constructor(private service: PatientService) { }
+  private patientId:any;
+  protected patient:any;
+  constructor(private _servicesService : PatientService, private router: Router, private route: ActivatedRoute) {}
 
-  submitPatient() {
-    console.log('Patient details submitted:', this.patient);
-    this.service.createPatient(this.patient).subscribe(data => {
-      console.log("Data received", data);
+  ngOnInit() {
+    this.route.paramMap.pipe(
+      switchMap(params => {
+        this.patientId = params.get('id');
+        return this._servicesService.getPatientById(this.patientId);
+      })
+    ).subscribe(data => {
+      this.patient = data;
+      console.log("Patient after: " + JSON.stringify(this.patient));
     });
-    alert("Patient details have been stored");
-    this.patient = new Patient(); 
+  }
+
+  edit() {
+    this.router.navigate(['/edit/'+ this.patientId]);
+  }
+
+  delete() {
+    this._servicesService.deletePatientById(this.patientId).subscribe(
+      data => this.router.navigate(['/'])
+    );
   }
 }

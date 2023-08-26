@@ -1,19 +1,26 @@
-<div>
+<div class="container">
     <h2>Add Patient Details</h2>
     <form>
+      <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" [(ngModel)]="patient.name" required>
-
+        <input type="text" id="name" name="name" [(ngModel)]="patient.name" class="form-control" required>
+      </div>
+  
+      <div class="form-group">
         <label for="gender">Gender:</label>
-        <select id="gender" name="gender" [(ngModel)]="patient.gender" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
+        <select id="gender" name="gender" [(ngModel)]="patient.gender" class="form-control" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
         </select>
-
+      </div>
+  
+      <div class="form-group">
         <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" [(ngModel)]="patient.dateOfBirth" required>
-
-        <button type="submit" (click)="submitPatient()">Add Patient</button>
+        <input type="date" id="dob" name="dob" [(ngModel)]="patient.dateOfBirth" class="form-control" required>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" (click)="submitPatient()">Add Patient</button>
     </form>
-</div>
+  </div>
+  
