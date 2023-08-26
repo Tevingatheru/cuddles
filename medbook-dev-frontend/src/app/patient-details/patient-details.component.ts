@@ -18,7 +18,7 @@ export class PatientDetailsComponent {
     ) {}
 
   submitPatient() {
-    this.service.createPatient(this.patient);
+    this.service.createPatient(this.patient).subscribe();
     console.log('Patient details submitted:', this.patient);
     this.patient = new Patient(); // Clear the form after submission
   }
