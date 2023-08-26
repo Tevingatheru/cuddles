@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Patient } from '../model/patient.model';
 import { PatientService } from '../service/patient.service';
-import { switchMap } from 'rxjs/operators';
-import { ActivatedRoute, Router , ParamMap} from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-details',
@@ -11,29 +9,17 @@ import { ActivatedRoute, Router , ParamMap} from '@angular/router';
   styleUrls: ['./patient-details.component.css']
 })
 export class PatientDetailsComponent {
-  private patientId:any;
-  protected patient:any;
-  constructor(private _servicesService : PatientService, private router: Router, private route: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        this.patientId = params.get('id');
-        return this._servicesService.getPatientById(this.patientId);
-      })
-    ).subscribe(data => {
-      this.patient = data;
-      console.log("Patient after: " + JSON.stringify(this.patient));
-    });
-  }
+  patient: Patient = new Patient();
 
-  edit() {
-    this.router.navigate(['/edit/'+ this.patientId]);
-  }
+  constructor(private service: PatientService,
+    private router: Router,
+    private route: ActivatedRoute,
+    ) {}
 
-  delete() {
-    this._servicesService.deletePatientById(this.patientId).subscribe(
-      data => this.router.navigate(['/'])
-    );
+  submitPatient() {
+    this.service.createPatient(this.patient);
+    console.log('Patient details submitted:', this.patient);
+    this.patient = new Patient(); // Clear the form after submission
   }
 }
