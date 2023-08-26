@@ -58,6 +58,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "medbook-dev-frontend:build",
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "medbook-dev-frontend:build:production"
@@ -94,5 +98,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "64f5bf34-62c9-457b-8e50-60acc4f9bf87"
   }
 }
