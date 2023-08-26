@@ -11,31 +11,26 @@ import { ActivatedRoute, Router , ParamMap} from '@angular/router';
   styleUrls: ['./patient-list.component.css']
 })
 export class PatientListComponent {
-  private patientId:any;
-  protected patient:any;
-  constructor(private _servicesService : PatientService, private router: Router, private route: ActivatedRoute) {}
+  patients: any;
 
-  ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        this.patientId = params.get('id');
-        return this._servicesService.getPatientById(this.patientId);
-      })
-    ).subscribe(data => {
-      this.patient = data;
-      console.log("Patient after: " + JSON.stringify(this.patient));
-    });
+  constructor(private patientService: PatientService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.showAllPatients();
   }
 
-  edit() {
-    this.router.navigate(['/details/'+ this.patientId]);
-  }
-
-  delete() {
-    this._servicesService.deletePatientById(this.patientId).subscribe(
-      data => this.router.navigate(['/'])
+  showAllPatients() {
+    this.patients = this.patientService.getAllPatients().subscribe(
+      patient => {
+        console.log("show all", JSON.stringify(patient));
+        this.patients = JSON.parse(JSON.stringify(patient))
+      }
     );
   }
+
   navAdd() {
     this.router.navigate(['/details']);
   }
